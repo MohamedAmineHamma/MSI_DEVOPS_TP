@@ -42,7 +42,7 @@ pipeline {
         stage('Run Container(Demo)') {
             steps {
                 bat ''' 
-                    echo Stop & remove container 
+                    echo Stop/remove container 
                     if it exists...
                      docker rm -f %CONTAINER_NAME% 2>NUL
                      
