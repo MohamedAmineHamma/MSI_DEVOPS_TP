@@ -39,13 +39,10 @@ pipeline {
             }
         }
         
-        stage('Run Container(Demo)') {
+        stage('Run Docker Container') {
             steps {
-                bat '''        
-                    docker run -d --name 
-                %CONTAINER_NAME% -p 3000:3000
-                %IMAGE_NAME%
-                '''
+                echo 'Running Docker Container'
+                bat 'docker run -d --name %CONTAINER_NAME% -p 3000:3000 %IMAGE_NAME%'
             }
         }
     }
