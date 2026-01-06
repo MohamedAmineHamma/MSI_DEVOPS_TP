@@ -41,12 +41,9 @@ pipeline {
         
         stage('Run Container(Demo)') {
             steps {
-                bat ''' 
-                    echo Stop/remove container 
-                    if it exists...
-                     docker rm -f %CONTAINER_NAME% 2>NUL
+                bat '''        
+                    docker rm -f %CONTAINER_NAME% 2>NUL
                      
-                    echo Starting container
                     docker run -d --name %CONTAINER_NAME% -p 3000:3000
                     %IMAGE_NAME%
                    '''
