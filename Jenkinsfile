@@ -39,17 +39,17 @@ pipeline {
             }
         }
         
-        stage('Run Container') {
+        stage('Run Container(Demo)') {
             steps {
                 bat ''' 
-                    REM Stop & remove container 
-                if it exists (ignore errors)
+                    echo Stop & remove container 
+                    if it exists...
                      docker rm -f %CONTAINER_NAME% 2>NUL
                      
-                    REM Run new container
+                    echo Starting container
                     docker run -d --name %CONTAINER_NAME% -p 3000:3000
                     %IMAGE_NAME%
-                    '''
+                   '''
             }
         }
     }
