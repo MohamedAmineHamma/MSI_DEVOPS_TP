@@ -9,7 +9,7 @@ pipeline {
   environment {
     IMAGE_NAME = "tp-msi-jenkins:latest"
     CONTAINER_NAME = "tp-msi-jenkins-demo"
-    TO_EMAIL = "tonadresse@gmail.com"
+    TO_EMAIL = "medamine.hamma.9@gmail.com"
   }
 
   stages {
@@ -39,7 +39,7 @@ pipeline {
 
     stage('Build Docker Image') {
       steps {
-        bat 'docker build -t %IMAGE_NAME% .'
+        bat "docker build -t %IMAGE_NAME% ."
       }
     }
 
@@ -55,35 +55,40 @@ pipeline {
   }
 
   post {
+
     success {
+      echo "Sending SUCCESS mail to ${env.TO_EMAIL}"
       mail to: "${env.TO_EMAIL}",
+           from: "medamine.hamma.9@gmail.com",
            subject: "SUCCESS: ${env.JOB_NAME} - Build #${env.BUILD_NUMBER}",
-           body: """Pipeline SUCCESS
+           body: """La pipeline Jenkins s’est terminée avec succès.
 
 Job: ${env.JOB_NAME}
-Build: #${env.BUILD_NUMBER}
-Status: SUCCESS
+Build: ${env.BUILD_NUMBER}
+Result: SUCCESS
 
 URL: ${env.BUILD_URL}
 """
     }
 
     failure {
+      echo "Sending FAILURE mail to ${env.TO_EMAIL}"
       mail to: "${env.TO_EMAIL}",
+           from: "medamine.hamma.9@gmail.com",
            subject: "FAILURE: ${env.JOB_NAME} - Build #${env.BUILD_NUMBER}",
-           body: """Pipeline FAILURE
+           body: """La pipeline Jenkins a échoué.
 
 Job: ${env.JOB_NAME}
-Build: #${env.BUILD_NUMBER}
-Status: FAILURE
+Build: ${env.BUILD_NUMBER}
+Result: FAILURE
 
-Consulte les logs ici:
-${env.BUILD_URL}
+URL: ${env.BUILD_URL}
 """
     }
 
     always {
       echo "pipeline finished: ${currentBuild.currentResult}"
     }
+
   }
 }
