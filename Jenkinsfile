@@ -9,6 +9,7 @@ pipeline {
   environment {
     IMAGE_NAME = "tp-msi-jenkins:latest"
     CONTAINER_NAME = "tp-msi-jenkins-demo"
+    TO_EMAIL = "tonadresse@gmail.com"
   }
 
   stages {
@@ -54,6 +55,33 @@ pipeline {
   }
 
   post {
+    success {
+      mail to: "${env.TO_EMAIL}",
+           subject: "SUCCESS: ${env.JOB_NAME} - Build #${env.BUILD_NUMBER}",
+           body: """Pipeline SUCCESS
+
+Job: ${env.JOB_NAME}
+Build: #${env.BUILD_NUMBER}
+Status: SUCCESS
+
+URL: ${env.BUILD_URL}
+"""
+    }
+
+    failure {
+      mail to: "${env.TO_EMAIL}",
+           subject: "FAILURE: ${env.JOB_NAME} - Build #${env.BUILD_NUMBER}",
+           body: """Pipeline FAILURE
+
+Job: ${env.JOB_NAME}
+Build: #${env.BUILD_NUMBER}
+Status: FAILURE
+
+Consulte les logs ici:
+${env.BUILD_URL}
+"""
+    }
+
     always {
       echo "pipeline finished: ${currentBuild.currentResult}"
     }
